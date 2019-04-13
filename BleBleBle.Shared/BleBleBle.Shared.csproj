@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AoLibs.Adapters.Core" Version="0.6.2" />
+    <PackageReference Include="AoLibs.Dialogs.Core" Version="0.6.2" />
+    <PackageReference Include="AoLibs.Navigation.Core" Version="0.6.2" />
+    <PackageReference Include="AoLibs.Utilities.Shared" Version="0.6.2" />
+    <PackageReference Include="Autofac" Version="4.9.2" />
+    <PackageReference Include="Plugin.BLE" Version="2.0.0-pre1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BleBleBle.Domain\BleBleBle.Domain.csproj" />
+    <ProjectReference Include="..\BleBleBle.Interfaces\BleBleBle.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

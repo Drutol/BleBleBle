@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android", "Android", "{D56D6405-063D-4C1A-9DA4-E2DCC0B9EC39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5E39DF3B-EEA5-46D4-8923-648E420E253D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{207A2219-AF8F-4C95-8475-C410DC33B79B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BleBleBle.Domain", "BleBleBle.Domain\BleBleBle.Domain.csproj", "{5B3D5B7F-4866-4EB0-BCEE-942BDC90FB98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BleBleBle.Interfaces", "BleBleBle.Interfaces\BleBleBle.Interfaces.csproj", "{41B81763-E829-4725-95F3-61344BE4F2ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BleBleBle.Shared", "BleBleBle.Shared\BleBleBle.Shared.csproj", "{B753A9C4-2137-47CB-99F3-0CE79682454A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BleBleBle.Android", "BleBleBle.Android\BleBleBle.Android.csproj", "{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B3D5B7F-4866-4EB0-BCEE-942BDC90FB98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B3D5B7F-4866-4EB0-BCEE-942BDC90FB98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B3D5B7F-4866-4EB0-BCEE-942BDC90FB98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B3D5B7F-4866-4EB0-BCEE-942BDC90FB98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41B81763-E829-4725-95F3-61344BE4F2ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B81763-E829-4725-95F3-61344BE4F2ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B81763-E829-4725-95F3-61344BE4F2ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B81763-E829-4725-95F3-61344BE4F2ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B753A9C4-2137-47CB-99F3-0CE79682454A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B753A9C4-2137-47CB-99F3-0CE79682454A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B753A9C4-2137-47CB-99F3-0CE79682454A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B753A9C4-2137-47CB-99F3-0CE79682454A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{207A2219-AF8F-4C95-8475-C410DC33B79B} = {5E39DF3B-EEA5-46D4-8923-648E420E253D}
+		{5B3D5B7F-4866-4EB0-BCEE-942BDC90FB98} = {207A2219-AF8F-4C95-8475-C410DC33B79B}
+		{41B81763-E829-4725-95F3-61344BE4F2ED} = {207A2219-AF8F-4C95-8475-C410DC33B79B}
+		{B753A9C4-2137-47CB-99F3-0CE79682454A} = {5E39DF3B-EEA5-46D4-8923-648E420E253D}
+		{5CDA6883-8AFF-4988-B7A3-8ADA0E5D4D93} = {D56D6405-063D-4C1A-9DA4-E2DCC0B9EC39}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5BBC2DA-EA66-41A2-A01F-E5C6F933C07D}
+	EndGlobalSection
+EndGlobal
