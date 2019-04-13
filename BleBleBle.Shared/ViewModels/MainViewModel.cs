@@ -20,7 +20,7 @@ namespace BleBleBle.Shared.ViewModels
         public void Initialize()
         {
             _navigationManager.Navigate(_permissionsManager.AreAllPermissionsGranted
-                ? PageIndex.DashboardPage
+                ? PageIndex.ScannerPage
                 : PageIndex.PermissionsPage);
         }
     }

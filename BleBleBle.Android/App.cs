@@ -13,6 +13,8 @@ using BleBleBle.Android.Utils.ActivityLifecycle;
 using BleBleBle.Domain.Enums;
 using BleBleBle.Interfaces;
 using BleBleBle.Shared.Statics;
+using Plugin.BLE;
+using Plugin.BLE.Abstractions.Contracts;
 
 namespace BleBleBle.Android
 {
@@ -49,6 +51,9 @@ namespace BleBleBle.Android
             containerBuilder.RegisterType<PhoneCallAdapter>().As<IPhoneCallAdapter>().SingleInstance();
 
             containerBuilder.RegisterType<PermissionsManager>().As<IPermissionsManager>().SingleInstance();
+            containerBuilder.RegisterType<BluetoothDeviceDataExtractor>().As<IBluetoothDeviceDataExtractor>().SingleInstance();
+
+            containerBuilder.Register(context => CrossBluetoothLE.Current.Adapter).As<IAdapter>();
 
             containerBuilder
                 .Register(context => MainActivity.Instance)

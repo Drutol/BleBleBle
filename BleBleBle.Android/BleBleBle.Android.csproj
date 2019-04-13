@@ -57,10 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Adapters\BluetoothDeviceDataExtractor.cs" />
     <Compile Include="Adapters\PermissionsManager.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Fragments\DashboardPageFragment.cs" />
+    <Compile Include="Fragments\DeviceDetailsPageFragment.cs" />
     <Compile Include="Fragments\PermissionsPageFragment.cs" />
+    <Compile Include="Fragments\ScannerPageFragment.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ActivityLifecycle\IRequestPermissionsResultProvider.cs" />
@@ -142,6 +145,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon_lock_opened.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\scanner_page.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_scanned_device.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_ble_service.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_ble_characteristic.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\device_details_page.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

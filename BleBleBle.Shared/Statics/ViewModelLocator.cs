@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using BleBleBle.Shared.ViewModels;
+using BleBleBle.Shared.ViewModels.Items;
 
 namespace BleBleBle.Shared.Statics
 {
@@ -12,6 +13,12 @@ namespace BleBleBle.Shared.Statics
             builder.RegisterType<DashboardViewModel>().SingleInstance();
             builder.RegisterType<MainViewModel>().SingleInstance();
             builder.RegisterType<PermissionsViewModel>().SingleInstance();
+            builder.RegisterType<ScannerPageViewModel>().SingleInstance();
+            builder.RegisterType<DeviceDetailsViewModel>().SingleInstance();
+
+            builder.RegisterType<ScannedDeviceViewModel>();
+            builder.RegisterType<DeviceServiceViewModel>();
+            builder.RegisterType<DeviceCharacteristicViewModel>();
 
             builder.RegisterBuildCallback(container => _container = container);
         }

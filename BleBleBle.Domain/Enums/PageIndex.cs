@@ -7,6 +7,8 @@ namespace BleBleBle.Domain.Enums
     public enum PageIndex
     {
         DashboardPage,
-        PermissionsPage
+        PermissionsPage,
+        ScannerPage,
+        DeviceDetailsPage
     }
 }
