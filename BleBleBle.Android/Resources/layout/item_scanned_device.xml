@@ -6,7 +6,7 @@
     android:clipToPadding="false"
     android:padding="8dp">
 
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/ClickSurface"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,8 +18,10 @@
         android:padding="16dp">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -38,6 +40,49 @@
                 tools:text="Some::Address::Mac" />
         </LinearLayout>
 
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/RssiProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="end"
+                android:background="@drawable/circular_progress_bar_bg"
+                android:indeterminate="false"
+                android:max="100"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                tools:progress="66" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/RssiValueLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@string/font_family_medium"
+                    tools:text="-999" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@string/font_family_light"
+                    android:text="RSSI"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
 
 </FrameLayout>

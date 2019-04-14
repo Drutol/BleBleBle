@@ -17,12 +17,18 @@ using AoLibs.Utilities.Android;
 using BleBleBle.Domain.Enums;
 using BleBleBle.Shared.ViewModels;
 using BleBleBle.Shared.ViewModels.Items;
+using GalaSoft.MvvmLight.Helpers;
 
 namespace BleBleBle.Android.Fragments
 {
     [NavigationPage(PageIndex.ScannerPage, NavigationPageAttribute.PageProvider.Cached)]
     public class ScannerPageFragment : FragmentBase<ScannerPageViewModel>
     {
+        public ScannerPageFragment() : base(true)
+        {
+
+        }
+
         public override int LayoutResourceId { get; } = Resource.Layout.scanner_page;
 
         protected override void InitBindings()
@@ -76,16 +82,26 @@ namespace BleBleBle.Android.Fragments
 
             protected override void SetBindings()
             {
-          
+                Bindings.Add(this.SetBinding(() => ViewModel.SignalStrength).WhenSourceChanges(() =>
+                    {
+                        RssiProgressBar.Progress = 130 - Math.Abs(ViewModel.SignalStrength);
+                        RssiValueLabel.Text = ViewModel.SignalStrength.ToString();
+                    }));
+
             }
 
             private TextView _deviceNameLabel;
             private TextView _deviceAddressLabel;
-            private FrameLayout _clickSurface;
+            private ProgressBar _rssiProgressBar;
+            private TextView _rssiValueLabel;
+            private LinearLayout _clickSurface;
 
             public TextView DeviceNameLabel => _deviceNameLabel ?? (_deviceNameLabel = _view.FindViewById<TextView>(Resource.Id.DeviceNameLabel));
             public TextView DeviceAddressLabel => _deviceAddressLabel ?? (_deviceAddressLabel = _view.FindViewById<TextView>(Resource.Id.DeviceAddressLabel));
-            public FrameLayout ClickSurface => _clickSurface ?? (_clickSurface = _view.FindViewById<FrameLayout>(Resource.Id.ClickSurface));
+            public ProgressBar RssiProgressBar => _rssiProgressBar ?? (_rssiProgressBar = _view.FindViewById<ProgressBar>(Resource.Id.RssiProgressBar));
+            public TextView RssiValueLabel => _rssiValueLabel ?? (_rssiValueLabel = _view.FindViewById<TextView>(Resource.Id.RssiValueLabel));
+            public LinearLayout ClickSurface => _clickSurface ?? (_clickSurface = _view.FindViewById<LinearLayout>(Resource.Id.ClickSurface));
         }
+
     }
 }
