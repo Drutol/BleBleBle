@@ -60,6 +60,7 @@
     <Compile Include="Adapters\BluetoothDeviceDataExtractor.cs" />
     <Compile Include="Adapters\PermissionsManager.cs" />
     <Compile Include="App.cs" />
+    <Compile Include="Fragments\CharacteristicDetailsPageFragment.cs" />
     <Compile Include="Fragments\DashboardPageFragment.cs" />
     <Compile Include="Fragments\DeviceDetailsPageFragment.cs" />
     <Compile Include="Fragments\PermissionsPageFragment.cs" />
@@ -166,6 +167,24 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\circular_progress_bar.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_characteristic_message_sent.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\item_characteristic_message_received.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\characteristics_details_page.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_send.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_more.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_double_tick.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -9,6 +9,7 @@ namespace BleBleBle.Domain.Enums
         DashboardPage,
         PermissionsPage,
         ScannerPage,
-        DeviceDetailsPage
+        DeviceDetailsPage,
+        CharacteristicDetailsPage
     }
 }

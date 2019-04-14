@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using BleBleBle.Shared.ViewModels;
 using BleBleBle.Shared.ViewModels.Items;
+using BleBleBle.Shared.ViewModels.Items.Messages;
 
 namespace BleBleBle.Shared.Statics
 {
@@ -15,10 +16,13 @@ namespace BleBleBle.Shared.Statics
             builder.RegisterType<PermissionsViewModel>().SingleInstance();
             builder.RegisterType<ScannerPageViewModel>().SingleInstance();
             builder.RegisterType<DeviceDetailsViewModel>().SingleInstance();
+            builder.RegisterType<CharacteristicDetailsViewModel>().SingleInstance();
 
             builder.RegisterType<ScannedDeviceViewModel>();
             builder.RegisterType<DeviceServiceViewModel>();
             builder.RegisterType<DeviceCharacteristicViewModel>();
+            builder.RegisterType<ReceivedCharacteristicMessageViewModel>();
+            builder.RegisterType<SentCharacteristicMessageViewModel>();
 
             builder.RegisterBuildCallback(container => _container = container);
         }

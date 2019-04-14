@@ -13,6 +13,7 @@ using Android.Widget;
 using AoLibs.Adapters.Android.Recycler;
 using AoLibs.Navigation.Android.Navigation;
 using AoLibs.Navigation.Android.Navigation.Attributes;
+using AoLibs.Utilities.Android;
 using BleBleBle.Domain.Enums;
 using BleBleBle.Shared.Interfaces;
 using BleBleBle.Shared.NavArgs;
@@ -65,6 +66,8 @@ namespace BleBleBle.Android.Fragments
         {
             holder.CharacteristicNameLabel.Text = item.Characteristic.Name;
             holder.CharacteristicUuidLabel.Text = item.Characteristic.Uuid;
+
+            holder.ClickSurface.SetOnClickCommand(ViewModel.NavigateCharacteristicDetailsCommand, item);
         }
 
         private void ServiceDataTemplate(DeviceServiceViewModel item, ServiceViewHolder holder, int position)
@@ -119,10 +122,12 @@ namespace BleBleBle.Android.Fragments
 
             private TextView _characteristicNameLabel;
             private TextView _characteristicUuidLabel;
+            private FrameLayout _clickSurface;
 
             public TextView CharacteristicNameLabel => _characteristicNameLabel ?? (_characteristicNameLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicNameLabel));
             public TextView CharacteristicUuidLabel => _characteristicUuidLabel ?? (_characteristicUuidLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicUuidLabel));
-
+            public FrameLayout ClickSurface => _clickSurface ?? (_clickSurface = _view.FindViewById<FrameLayout>(Resource.Id.ClickSurface));
         }
+
     }
 }

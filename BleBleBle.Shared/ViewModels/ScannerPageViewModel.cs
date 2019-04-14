@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AoLibs.Adapters.Core.Interfaces;
 using AoLibs.Navigation.Core.Interfaces;
 using BleBleBle.Domain.Bluetooth;
 using BleBleBle.Domain.Enums;
@@ -24,6 +25,7 @@ namespace BleBleBle.Shared.ViewModels
     {
         private readonly INavigationManager<PageIndex> _navigationManager;
         private readonly IAdapter _adapter;
+        private readonly IDispatcherAdapter _dispatcherAdapter;
         private readonly IBluetoothDeviceDataExtractor _bluetoothDeviceDataExtractor;
         private CancellationTokenSource _taskCancelationSource;
 
@@ -33,10 +35,12 @@ namespace BleBleBle.Shared.ViewModels
 
         public ScannerPageViewModel(INavigationManager<PageIndex> navigationManager,
             IAdapter adapter,
+            IDispatcherAdapter dispatcherAdapter,
             IBluetoothDeviceDataExtractor bluetoothDeviceDataExtractor)
         {
             _navigationManager = navigationManager;
             _adapter = adapter;
+            _dispatcherAdapter = dispatcherAdapter;
             _bluetoothDeviceDataExtractor = bluetoothDeviceDataExtractor;
 
             _adapter.DeviceDiscovered += AdapterOnDeviceDiscovered;
@@ -67,13 +71,17 @@ namespace BleBleBle.Shared.ViewModels
             {
                 await _adapter.StopScanningForDevicesAsync();
 
-                foreach (var goneDevice in _spotTimes.Where(pair =>
-                    DateTime.UtcNow - pair.Value > TimeSpan.FromSeconds(20)))
+                _dispatcherAdapter.Run(() =>
                 {
-                    var device =
-                        ScannedDeviceViewModels.First(model => model.ScannedDevice.Device.Id == goneDevice.Key);
-                    ScannedDeviceViewModels.Remove(device);
-                }
+                    foreach (var goneDevice in _spotTimes.Where(pair =>
+                        DateTime.UtcNow - pair.Value > TimeSpan.FromSeconds(20)))
+                    {
+                        var device =
+                            ScannedDeviceViewModels.FirstOrDefault(model => model.ScannedDevice.Device.Id == goneDevice.Key);
+                        if (device != null)
+                            ScannedDeviceViewModels.Remove(device);
+                    }
+                });
 
                 await _adapter.StartScanningForDevicesAsync();
 

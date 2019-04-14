@@ -7,6 +7,7 @@
     <color name="AccentColour">#FFEB3B</color>
     <color name="AccentColourDark">#DFCA34</color>
     <color name="SecondaryAccentColour">#98c926</color>
+    <color name="SecondaryAccentColourDark">#7ca41f</color>
 
     <color name="OkColour">#B1FA0C</color>
     <color name="ErrorColour">#FF0048</color>

@@ -11,6 +11,7 @@ using BleBleBle.Shared.Statics;
 using BleBleBle.Shared.Utils;
 using BleBleBle.Shared.ViewModels.Items;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using Plugin.BLE.Abstractions.Contracts;
 
 namespace BleBleBle.Shared.ViewModels
@@ -56,6 +57,15 @@ namespace BleBleBle.Shared.ViewModels
                 }
             }
         }
+
+        public RelayCommand<DeviceCharacteristicViewModel> NavigateCharacteristicDetailsCommand =>
+            new RelayCommand<DeviceCharacteristicViewModel>(characteristic =>
+            {
+                _navigationManager.Navigate(PageIndex.CharacteristicDetailsPage, new DeviceCharacteristicsDetailsNavArgs
+                {
+                    Characteristic = characteristic.Characteristic
+                });
+            });
 
     }
 }
