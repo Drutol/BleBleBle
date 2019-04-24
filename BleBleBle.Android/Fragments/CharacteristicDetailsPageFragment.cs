@@ -33,11 +33,19 @@ namespace BleBleBle.Android.Fragments
 
         protected override void InitBindings()
         {
-            SendButton.SetOnClickListener(new OnClickListener(view =>
-            {
-                ViewModel.SendMessageCommand.Execute(CommandInput.Text);
-            }));
+            Bindings.Add(
+                this.SetBinding(() => ViewModel.AreNotificationsEnabled,
+                    () => EnableNotificationsCheckbox.Checked, BindingMode.TwoWay));
 
+            Bindings.Add(this.SetBinding(() => ViewModel.Characteristic).WhenSourceChanges(() =>
+            {
+                if (ViewModel.Characteristic == null)
+                    return;
+
+                WriteInput.Visibility = ViewModel.Characteristic.CanWrite ? ViewStates.Visible : ViewStates.Gone;
+                EnableNotificationsCheckbox.Visibility = ViewModel.Characteristic.CanUpdate ? ViewStates.Visible : ViewStates.Gone;
+                ReadOnceButton.Visibility = ViewModel.Characteristic.CanRead ? ViewStates.Visible : ViewStates.Gone;
+            }));
 
             ChatRecyclerView.SetAdapter(
                 new ObservableRecyclerAdapterWithMultipleViewTypes<IDeviceCharacteristicChatListItem,
@@ -70,11 +78,23 @@ namespace BleBleBle.Android.Fragments
                     },
                     ViewModel.ChatMessages) {StretchContentHorizonatally = true});
             ChatRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity, LinearLayoutManager.Vertical, true));
+
+            SendButton.SetOnClickListener(new OnClickListener(view =>
+            {
+                ViewModel.SendMessageCommand.Execute(CommandInput.Text);
+            }));
+
+            ReadOnceButton.SetOnClickCommand(ViewModel.ReadOnceCommand);
         }
 
         public override void NavigatedTo()
         {
             ViewModel.NavigatedTo(NavigationArguments as DeviceCharacteristicsDetailsNavArgs);
+        }
+
+        public override void NavigatedFrom()
+        {
+            ViewModel.NavigatedFrom();
         }
 
         private void ReceivedDataTemplate(ReceivedCharacteristicMessageViewModel item, ReceivedMessageHolder holder, int position)
@@ -91,13 +111,19 @@ namespace BleBleBle.Android.Fragments
 
         #region Views
 
+        private CheckBox _enableNotificationsCheckbox;
+        private Button _readOnceButton;
         private RecyclerView _chatRecyclerView;
         private TextInputEditText _commandInput;
         private ImageButton _sendButton;
+        private LinearLayout _writeInput;
 
+        public CheckBox EnableNotificationsCheckbox => _enableNotificationsCheckbox ?? (_enableNotificationsCheckbox = FindViewById<CheckBox>(Resource.Id.EnableNotificationsCheckbox));
+        public Button ReadOnceButton => _readOnceButton ?? (_readOnceButton = FindViewById<Button>(Resource.Id.ReadOnceButton));
         public RecyclerView ChatRecyclerView => _chatRecyclerView ?? (_chatRecyclerView = FindViewById<RecyclerView>(Resource.Id.ChatRecyclerView));
         public TextInputEditText CommandInput => _commandInput ?? (_commandInput = FindViewById<TextInputEditText>(Resource.Id.CommandInput));
         public ImageButton SendButton => _sendButton ?? (_sendButton = FindViewById<ImageButton>(Resource.Id.SendButton));
+        public LinearLayout WriteInput => _writeInput ?? (_writeInput = FindViewById<LinearLayout>(Resource.Id.WriteInput));
 
         #endregion
 
@@ -160,7 +186,5 @@ namespace BleBleBle.Android.Fragments
             public TextView TimeLabel => _timeLabel ?? (_timeLabel = _view.FindViewById<TextView>(Resource.Id.TimeLabel));
 
         }
-
-
     }
 }

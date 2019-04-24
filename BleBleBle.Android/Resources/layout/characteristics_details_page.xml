@@ -2,22 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?BackgroundColour"
     android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#444"
+        android:background="?ForegroundColour"
         android:elevation="6dp"
         android:padding="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Characteristic Details"
-            android:textColor="@color/AccentColour"
-            android:textSize="18sp" />
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Characteristic Details"
+                android:textColor="@color/AccentColour"
+                android:textSize="18sp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/EnableNotificationsCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:text="Enable notifications" />
+
+                <Button
+                    android:id="@+id/ReadOnceButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="Read once" />
+            </FrameLayout>
+
+        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout
@@ -42,14 +68,21 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:fadingEdge="vertical"
+            android:paddingBottom="8dp" />
 
         <LinearLayout
+            android:id="@+id/WriteInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#222"
-            android:elevation="4dp" android:padding="8dp"
-            android:orientation="horizontal">
+            android:background="?ForegroundColour"
+            android:elevation="4dp"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="16dp">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="0dp"
@@ -69,9 +102,9 @@
                 android:id="@+id/SendButton"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:tint="#fff"
                 android:background="@android:color/transparent"
-                android:src="@drawable/icon_send" />
+                android:src="@drawable/icon_send"
+                android:tint="#fff" />
         </LinearLayout>
 
 
