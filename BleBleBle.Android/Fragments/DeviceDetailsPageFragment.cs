@@ -14,6 +14,7 @@ using AoLibs.Adapters.Android.Recycler;
 using AoLibs.Navigation.Android.Navigation;
 using AoLibs.Navigation.Android.Navigation.Attributes;
 using AoLibs.Utilities.Android;
+using AoLibs.Utilities.Android.Listeners;
 using BleBleBle.Domain.Enums;
 using BleBleBle.Shared.Interfaces;
 using BleBleBle.Shared.NavArgs;
@@ -90,6 +91,11 @@ namespace BleBleBle.Android.Fragments
         {
             holder.ServiceNameLabel.Text = item.Service.Name;
             holder.ServiceUuidLabel.Text = item.Service.Id.ToString();
+
+            holder.ClickSurface.SetOnClickListener(new OnClickListener(surf =>
+            {
+                // TODO hide characteristics
+            }));
         }
 
         private string GetPermissionsString(ICharacteristic itemCharacteristic)
@@ -134,9 +140,11 @@ namespace BleBleBle.Android.Fragments
 
             private TextView _serviceNameLabel;
             private TextView _serviceUuidLabel;
+            private FrameLayout _clickSurface;
 
             public TextView ServiceNameLabel => _serviceNameLabel ?? (_serviceNameLabel = _view.FindViewById<TextView>(Resource.Id.ServiceNameLabel));
             public TextView ServiceUuidLabel => _serviceUuidLabel ?? (_serviceUuidLabel = _view.FindViewById<TextView>(Resource.Id.ServiceUuidLabel));
+            public FrameLayout ClickSurface => _clickSurface ?? (_clickSurface = _view.FindViewById<FrameLayout>(Resource.Id.ClickSurface));
 
         }
 
