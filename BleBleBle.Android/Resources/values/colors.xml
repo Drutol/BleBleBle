@@ -11,4 +11,8 @@
 
     <color name="OkColour">#B1FA0C</color>
     <color name="ErrorColour">#FF0048</color>
+
+    <color name="DarkThemeTextColour">#fff</color>
+    <color name="DarkBackgroundColour">#222</color>
+    <color name="DarkForegroundColour">#444</color>
 </resources>

@@ -99,16 +99,16 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AoLibs.Adapters.Android">
-      <Version>0.6.2</Version>
+      <Version>0.6.3</Version>
     </PackageReference>
     <PackageReference Include="AoLibs.Dialogs.Android">
-      <Version>0.6.2</Version>
+      <Version>0.6.3</Version>
     </PackageReference>
     <PackageReference Include="AoLibs.Navigation.Android">
-      <Version>0.6.2</Version>
+      <Version>0.6.3</Version>
     </PackageReference>
     <PackageReference Include="AoLibs.Utilities.Android">
-      <Version>0.6.2</Version>
+      <Version>0.6.3</Version>
     </PackageReference>
     <PackageReference Include="Autofac">
       <Version>4.9.2</Version>
@@ -185,6 +185,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\icon_double_tick.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_chip.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\attributes.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_characteristic.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_service.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_chevron_right.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

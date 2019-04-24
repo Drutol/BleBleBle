@@ -19,6 +19,7 @@ using BleBleBle.Shared.Interfaces;
 using BleBleBle.Shared.NavArgs;
 using BleBleBle.Shared.ViewModels;
 using BleBleBle.Shared.ViewModels.Items;
+using GalaSoft.MvvmLight.Helpers;
 
 namespace BleBleBle.Android.Fragments
 {
@@ -29,6 +30,14 @@ namespace BleBleBle.Android.Fragments
 
         protected override void InitBindings()
         {
+            Bindings.Add(this.SetBinding(() => ViewModel.ScannedDevice).WhenSourceChanges(() =>
+            {
+                if(ViewModel.ScannedDevice == null)
+                    return;
+
+                DeviceLabel.Text = ViewModel.ScannedDevice.AdvertisedName;
+            }));
+
             RecyclerView.SetAdapter(
                 new ObservableRecyclerAdapterWithMultipleViewTypes<IDeviceDetailsListItem, RecyclerView.ViewHolder>(
                     new Dictionary<Type, ObservableRecyclerAdapterWithMultipleViewTypes<IDeviceDetailsListItem,
@@ -62,6 +71,11 @@ namespace BleBleBle.Android.Fragments
             ViewModel.NavigatedTo(NavigationArguments as DeviceDetailsNavArgs);
         }
 
+        public override void NavigatedFrom()
+        {
+            ViewModel.NavigatedFrom();
+        }
+
         private void CharacteristicDataTemplate(DeviceCharacteristicViewModel item, CharacteristicViewHolder holder, int position)
         {
             holder.CharacteristicNameLabel.Text = item.Characteristic.Name;
@@ -78,8 +92,10 @@ namespace BleBleBle.Android.Fragments
 
         #region Views
 
+        private TextView _deviceLabel;
         private RecyclerView _recyclerView;
 
+        public TextView DeviceLabel => _deviceLabel ?? (_deviceLabel = FindViewById<TextView>(Resource.Id.DeviceLabel));
         public RecyclerView RecyclerView => _recyclerView ?? (_recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerView));
 
         #endregion
