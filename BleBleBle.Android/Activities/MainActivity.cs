@@ -18,7 +18,7 @@ using BleBleBle.Shared.ViewModels;
 namespace BleBleBle.Android.Activities
 {
     [Activity(Label = "@string/app_name",
-        Theme = "@style/AppTheme",
+        Theme = "@style/AppTheme.Dark",
         ScreenOrientation = ScreenOrientation.Portrait,
         MainLauncher = true,
         LaunchMode = LaunchMode.SingleInstance,

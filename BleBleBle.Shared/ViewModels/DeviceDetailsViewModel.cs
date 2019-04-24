@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using AoLibs.Adapters.Core.Interfaces;
 using AoLibs.Navigation.Core.Interfaces;
 using BleBleBle.Domain.Bluetooth;
 using BleBleBle.Domain.Enums;
@@ -20,26 +21,45 @@ namespace BleBleBle.Shared.ViewModels
     {
         private readonly INavigationManager<PageIndex> _navigationManager;
         private readonly IAdapter _adapter;
+        private readonly IMessageBoxProvider _messageBoxProvider;
         private IDevice _bluetoothDevice;
+        private ScannedDevice _scannedDevice;
 
-        public ScannedDevice Device { get; set; }
+        public ScannedDevice ScannedDevice
+        {
+            get => _scannedDevice;
+            set
+            {
+                _scannedDevice = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ObservableCollection<IDeviceDetailsListItem> DeviceDetails { get; } =
             new ObservableCollection<IDeviceDetailsListItem>();
 
         public DeviceDetailsViewModel(INavigationManager<PageIndex> navigationManager,
-            IAdapter adapter)
+            IAdapter adapter, IMessageBoxProvider messageBoxProvider)
         {
             _navigationManager = navigationManager;
             _adapter = adapter;
+            _messageBoxProvider = messageBoxProvider;
+        }
+
+        public async void NavigatedFrom()
+        {
+            await _adapter.DisconnectDeviceAsync(ScannedDevice.Device);
         }
 
         public async void NavigatedTo(DeviceDetailsNavArgs detailsNavArgs)
         {
             DeviceDetails.Clear();
-            Device = detailsNavArgs.ScannedDevice;
+            ScannedDevice = detailsNavArgs.ScannedDevice;
 
-            _bluetoothDevice = await _adapter.ConnectToKnownDeviceAsync(Device.Guid);
+            using (_messageBoxProvider.ObtainLoaderLifetime($"Connecting to {ScannedDevice.AdvertisedName}", null))
+            {
+                _bluetoothDevice = await _adapter.ConnectToKnownDeviceAsync(ScannedDevice.Guid);
+            }
 
             using (var scope = ResourceLocator.ObtainScope())
             {
