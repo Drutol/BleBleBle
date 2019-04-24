@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using AoLibs.Adapters.Core.Interfaces;
 using AoLibs.Navigation.Core.Interfaces;
 using BleBleBle.Domain.Enums;
 using BleBleBle.Domain.Models;
@@ -21,6 +22,7 @@ namespace BleBleBle.Shared.ViewModels
     public class CharacteristicDetailsViewModel : ViewModelBase
     {
         private readonly INavigationManager<PageIndex> _navigationManager;
+        private readonly IMessageBoxProvider _messageBoxProvider;
         private ICharacteristic _characteristic;
 
         public ObservableCollection<IDeviceCharacteristicChatListItem> ChatMessages { get; set; } =
@@ -36,9 +38,10 @@ namespace BleBleBle.Shared.ViewModels
             }
         }
 
-        public CharacteristicDetailsViewModel(INavigationManager<PageIndex> navigationManager)
+        public CharacteristicDetailsViewModel(INavigationManager<PageIndex> navigationManager, IMessageBoxProvider messageBoxProvider)
         {
             _navigationManager = navigationManager;
+            _messageBoxProvider = messageBoxProvider;
         }
 
         public void NavigatedTo(DeviceCharacteristicsDetailsNavArgs navArgs)
@@ -51,17 +54,28 @@ namespace BleBleBle.Shared.ViewModels
         {
             using (var scope = ResourceLocator.ObtainScope())
             {
-                var messageModel = scope.TypedResolve<SentCharacteristicMessageViewModel>(new SentCharacteristicMessage
+                try
                 {
-                    Content = message,
-                    DateTime = DateTime.Now
-                });
-                ChatMessages.Add(messageModel);
+                    var messageModel = scope.TypedResolve<SentCharacteristicMessageViewModel>(
+                        new SentCharacteristicMessage
+                        {
+                            Content = message,
+                            DateTime = DateTime.Now
+                        });
 
-                var resp = await Characteristic.WriteAsync(Encoding.UTF8.GetBytes(message));
+                    ChatMessages.Add(messageModel);
 
-                await Task.Delay(500);
-                messageModel.SuccessfullySent = resp;
+                    var resp = await Characteristic.WriteAsync(Encoding.UTF8.GetBytes(message));
+
+                    await Task.Delay(500);
+                    messageModel.SuccessfullySent = resp;
+
+                }
+                catch (Exception e)
+                {
+                    if (e.Message.Contains("Characteristic does not support write"))
+                        await _messageBoxProvider.ShowMessageBoxOkAsync(string.Empty, "Characteristic don't have write permission", "OK");
+                }
             }
         });
     }

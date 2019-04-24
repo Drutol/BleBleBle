@@ -86,7 +86,7 @@ namespace BleBleBle.Shared.ViewModels
                 await _adapter.StartScanningForDevicesAsync();
 
 
-                Thread.Sleep(5000);
+                Thread.Sleep(500);
             }
         }
 

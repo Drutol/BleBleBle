@@ -19,6 +19,7 @@ using BleBleBle.Shared.Interfaces;
 using BleBleBle.Shared.NavArgs;
 using BleBleBle.Shared.ViewModels;
 using BleBleBle.Shared.ViewModels.Items;
+using Plugin.BLE.Abstractions.Contracts;
 
 namespace BleBleBle.Android.Fragments
 {
@@ -66,6 +67,7 @@ namespace BleBleBle.Android.Fragments
         {
             holder.CharacteristicNameLabel.Text = item.Characteristic.Name;
             holder.CharacteristicUuidLabel.Text = item.Characteristic.Uuid;
+            holder.CharacteristicPermissionsLabel.Text = GetPermissionsString(item.Characteristic);
 
             holder.ClickSurface.SetOnClickCommand(ViewModel.NavigateCharacteristicDetailsCommand, item);
         }
@@ -74,6 +76,22 @@ namespace BleBleBle.Android.Fragments
         {
             holder.ServiceNameLabel.Text = item.Service.Name;
             holder.ServiceUuidLabel.Text = item.Service.Id.ToString();
+        }
+
+        private string GetPermissionsString(ICharacteristic itemCharacteristic)
+        {
+            var str = "";
+
+            if (itemCharacteristic.CanRead)
+                str += "r/";
+
+            if (itemCharacteristic.CanWrite)
+                str += "w/";
+
+            if (itemCharacteristic.CanUpdate)
+                str += "u";
+
+            return str;
         }
 
         #region Views
@@ -122,10 +140,12 @@ namespace BleBleBle.Android.Fragments
 
             private TextView _characteristicNameLabel;
             private TextView _characteristicUuidLabel;
+            private TextView _characteristicPermissionsLabel;
             private FrameLayout _clickSurface;
 
             public TextView CharacteristicNameLabel => _characteristicNameLabel ?? (_characteristicNameLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicNameLabel));
             public TextView CharacteristicUuidLabel => _characteristicUuidLabel ?? (_characteristicUuidLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicUuidLabel));
+            public TextView CharacteristicPermissionsLabel => _characteristicPermissionsLabel ?? (_characteristicPermissionsLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicPermissionsLabel));
             public FrameLayout ClickSurface => _clickSurface ?? (_clickSurface = _view.FindViewById<FrameLayout>(Resource.Id.ClickSurface));
         }
 
