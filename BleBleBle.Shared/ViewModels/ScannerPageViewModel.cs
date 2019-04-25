@@ -49,12 +49,13 @@ namespace BleBleBle.Shared.ViewModels
 
         private void AdapterOnDeviceConnectionLost(object sender, DeviceErrorEventArgs e)
         {
-            var device = ScannedDeviceViewModels.FirstOrDefault(model => model.ScannedDevice.Device.Id == e.Device.Id);
+            
+            //var device = ScannedDeviceViewModels.FirstOrDefault(model => model.ScannedDevice.Device.Id == e.Device.Id);
 
-            if (device != null)
-            {
-                ScannedDeviceViewModels.Remove(device);
-            }
+            //if (device != null)
+            //{
+            //    ScannedDeviceViewModels.Remove(device);
+            //}
         }
 
         public void NavigatedTo()

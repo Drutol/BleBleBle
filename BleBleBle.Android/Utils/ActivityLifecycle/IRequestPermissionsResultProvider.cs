@@ -15,7 +15,9 @@ using AoLibs.Adapters.Android.Interfaces;
 namespace BleBleBle.Android.Utils.ActivityLifecycle
 {
     public interface
-        IRequestPermissionsResultProvider : IOnActivityEvent<(int RequestCode, string[] Permissions, Permission[]
+        IRequestPermissionsResultProvider : IOnActivityEvent<(
+            int RequestCode,
+            string[] Permissions, Permission[]
             GrantResults)>
     {
 

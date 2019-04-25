@@ -66,6 +66,8 @@ namespace BleBleBle.Android.Fragments
                         }
                     }, ViewModel.DeviceDetails) {StretchContentHorizonatally = true});
             RecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
+
+
         }
 
         public override void NavigatedTo()

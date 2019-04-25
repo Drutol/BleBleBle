@@ -44,11 +44,18 @@ namespace BleBleBle.Shared.ViewModels
             _navigationManager = navigationManager;
             _adapter = adapter;
             _messageBoxProvider = messageBoxProvider;
+            _navigationManager.WentBack += NavigationManagerOnNavigated;
+        }
+
+        private async void NavigationManagerOnNavigated(object sender, PageIndex e)
+        {
+            if (e == PageIndex.ScannerPage)
+                await _adapter.DisconnectDeviceAsync(ScannedDevice.Device);
         }
 
         public async void NavigatedFrom()
         {
-            await _adapter.DisconnectDeviceAsync(ScannedDevice.Device);
+
         }
 
         public async void NavigatedTo(DeviceDetailsNavArgs detailsNavArgs)
