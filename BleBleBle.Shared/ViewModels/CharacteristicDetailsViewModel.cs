@@ -95,7 +95,8 @@ namespace BleBleBle.Shared.ViewModels
             });
         }
 
-        public CharacteristicDetailsViewModel(INavigationManager<PageIndex> navigationManager,
+        public CharacteristicDetailsViewModel(INavigationManager<PageIndex> navigationManager, 
+            IMessageBoxProvider messageBoxProvider,
             IDispatcherAdapter dispatcherAdapter)
         {
             _navigationManager = navigationManager;
