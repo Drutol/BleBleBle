@@ -24,6 +24,7 @@ namespace BleBleBle.Shared.ViewModels
     public class CharacteristicDetailsViewModel : ViewModelBase
     {
         private readonly INavigationManager<PageIndex> _navigationManager;
+        private readonly IMessageBoxProvider _messageBoxProvider;
         private readonly IDispatcherAdapter _dispatcherAdapter;
         private ICharacteristic _characteristic;
         private bool _areNotificationsEnabled;
@@ -94,10 +95,12 @@ namespace BleBleBle.Shared.ViewModels
             });
         }
 
-        public CharacteristicDetailsViewModel(INavigationManager<PageIndex> navigationManager,
+        public CharacteristicDetailsViewModel(INavigationManager<PageIndex> navigationManager, 
+            IMessageBoxProvider messageBoxProvider,
             IDispatcherAdapter dispatcherAdapter)
         {
             _navigationManager = navigationManager;
+            _messageBoxProvider = messageBoxProvider;
             _dispatcherAdapter = dispatcherAdapter;
         }
 
@@ -111,17 +114,28 @@ namespace BleBleBle.Shared.ViewModels
         {
             using (var scope = ResourceLocator.ObtainScope())
             {
-                var messageModel = scope.TypedResolve<SentCharacteristicMessageViewModel>(new SentCharacteristicMessage
+                try
                 {
-                    Content = message,
-                    DateTime = DateTime.Now
-                });
-                ChatMessages.Insert(0, messageModel);
+                    var messageModel = scope.TypedResolve<SentCharacteristicMessageViewModel>(
+                        new SentCharacteristicMessage
+                        {
+                            Content = message,
+                            DateTime = DateTime.Now
+                        });
 
-                var resp = await Characteristic.WriteAsync(Encoding.UTF8.GetBytes(message));
+                    ChatMessages.Add(messageModel);
 
-                await Task.Delay(500);
-                messageModel.SuccessfullySent = resp;
+                    var resp = await Characteristic.WriteAsync(Encoding.UTF8.GetBytes(message));
+
+                    await Task.Delay(500);
+                    messageModel.SuccessfullySent = resp;
+
+                }
+                catch (Exception e)
+                {
+                    if (e.Message.Contains("Characteristic does not support write"))
+                        await _messageBoxProvider.ShowMessageBoxOkAsync(string.Empty, "Characteristic don't have write permission", "OK");
+                }
             }
         });
 
