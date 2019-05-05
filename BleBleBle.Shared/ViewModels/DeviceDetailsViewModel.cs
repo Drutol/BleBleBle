@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading;
 using AoLibs.Adapters.Core.Interfaces;
 using AoLibs.Navigation.Core.Interfaces;
 using BleBleBle.Domain.Bluetooth;
@@ -53,11 +54,6 @@ namespace BleBleBle.Shared.ViewModels
                 await _adapter.DisconnectDeviceAsync(ScannedDevice.Device);
         }
 
-        public async void NavigatedFrom()
-        {
-
-        }
-
         public async void NavigatedTo(DeviceDetailsNavArgs detailsNavArgs)
         {
             DeviceDetails.Clear();
@@ -65,7 +61,17 @@ namespace BleBleBle.Shared.ViewModels
 
             using (_messageBoxProvider.ObtainLoaderLifetime($"Connecting to {ScannedDevice.AdvertisedName}", null))
             {
-                _bluetoothDevice = await _adapter.ConnectToKnownDeviceAsync(ScannedDevice.Guid);
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                try
+                {
+                    _bluetoothDevice = await _adapter.ConnectToKnownDeviceAsync(ScannedDevice.Guid, default, cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    await _messageBoxProvider.ShowMessageBoxOkAsync("Error", "Failed to connect to the device.", "Ok");
+                    _navigationManager.GoBack();
+                    return;
+                }               
             }
 
             using (var scope = ResourceLocator.ObtainScope())

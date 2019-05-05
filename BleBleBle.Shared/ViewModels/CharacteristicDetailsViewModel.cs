@@ -146,6 +146,7 @@ namespace BleBleBle.Shared.ViewModels
                 {
                     message = "N/A";
                 }
+               
 
                 var messageModel = scope.TypedResolve<ReceivedCharacteristicMessageViewModel>(new ReceivedCharacteristicMessage
                 {

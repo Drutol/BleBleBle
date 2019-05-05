@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -16,6 +16,7 @@ using AoLibs.Navigation.Android.Navigation;
 using AoLibs.Navigation.Android.Navigation.Attributes;
 using AoLibs.Utilities.Android;
 using AoLibs.Utilities.Android.Listeners;
+using AoLibs.Utilities.Android.Views;
 using BleBleBle.Domain.Enums;
 using BleBleBle.Shared.Interfaces;
 using BleBleBle.Shared.NavArgs;
@@ -31,6 +32,8 @@ namespace BleBleBle.Android.Fragments
     {
         public override int LayoutResourceId { get; } = Resource.Layout.characteristics_details_page;
 
+        private static bool _readCharacteristic;
+
         protected override void InitBindings()
         {
             Bindings.Add(
@@ -43,8 +46,11 @@ namespace BleBleBle.Android.Fragments
                     return;
 
                 WriteInput.Visibility = ViewModel.Characteristic.CanWrite ? ViewStates.Visible : ViewStates.Gone;
-                EnableNotificationsCheckbox.Visibility = ViewModel.Characteristic.CanUpdate ? ViewStates.Visible : ViewStates.Gone;
-                ReadOnceButton.Visibility = ViewModel.Characteristic.CanRead ? ViewStates.Visible : ViewStates.Gone;
+                EnableNotificationsCheckbox.Visibility = ViewModel.Characteristic.CanUpdate && !_readCharacteristic ? ViewStates.Visible : ViewStates.Gone;
+                PullToReadLabel.Visibility = ViewModel.Characteristic.CanRead ? ViewStates.Visible : ViewStates.Gone;
+                RefreshLayout.Enabled = ViewModel.Characteristic.CanRead;
+                RefreshLayout.ScrollingView = ChatRecyclerView;
+                RefreshLayout.Refresh += RefreshLayoutOnRefresh;
             }));
 
             ChatRecyclerView.SetAdapter(
@@ -71,7 +77,7 @@ namespace BleBleBle.Android.Fragments
                                 ReceivedMessageHolder>
                             {
                                 ItemTemplate = type =>
-                                    LayoutInflater.Inflate(Resource.Layout.item_characteristic_message_sent, null),
+                                    LayoutInflater.Inflate(Resource.Layout.item_characteristic_message_received, null),
                                 SpecializedDataTemplate = ReceivedDataTemplate
                             }
                         }
@@ -83,8 +89,15 @@ namespace BleBleBle.Android.Fragments
             {
                 ViewModel.SendMessageCommand.Execute(CommandInput.Text);
             }));
+        }
 
-            ReadOnceButton.SetOnClickCommand(ViewModel.ReadOnceCommand);
+        private async void RefreshLayoutOnRefresh(object sender, EventArgs e)
+        {
+            _readCharacteristic = true;
+            PullToReadLabel.Visibility = ViewStates.Gone;
+            ViewModel.ReadOnceCommand.Execute(null);
+            await Task.Delay(300);
+            RefreshLayout.Refreshing = false;
         }
 
         public override void NavigatedTo()
@@ -112,15 +125,17 @@ namespace BleBleBle.Android.Fragments
         #region Views
 
         private CheckBox _enableNotificationsCheckbox;
-        private Button _readOnceButton;
+        private TextView _pullToReadLabel;
         private RecyclerView _chatRecyclerView;
+        private ScrollableSwipeToRefreshLayout _refreshLayout;
         private TextInputEditText _commandInput;
         private ImageButton _sendButton;
         private LinearLayout _writeInput;
 
         public CheckBox EnableNotificationsCheckbox => _enableNotificationsCheckbox ?? (_enableNotificationsCheckbox = FindViewById<CheckBox>(Resource.Id.EnableNotificationsCheckbox));
-        public Button ReadOnceButton => _readOnceButton ?? (_readOnceButton = FindViewById<Button>(Resource.Id.ReadOnceButton));
+        public TextView PullToReadLabel => _pullToReadLabel ?? (_pullToReadLabel = FindViewById<TextView>(Resource.Id.PullToReadLabel));
         public RecyclerView ChatRecyclerView => _chatRecyclerView ?? (_chatRecyclerView = FindViewById<RecyclerView>(Resource.Id.ChatRecyclerView));
+        public ScrollableSwipeToRefreshLayout RefreshLayout => _refreshLayout ?? (_refreshLayout = FindViewById<ScrollableSwipeToRefreshLayout>(Resource.Id.RefreshLayout));
         public TextInputEditText CommandInput => _commandInput ?? (_commandInput = FindViewById<TextInputEditText>(Resource.Id.CommandInput));
         public ImageButton SendButton => _sendButton ?? (_sendButton = FindViewById<ImageButton>(Resource.Id.SendButton));
         public LinearLayout WriteInput => _writeInput ?? (_writeInput = FindViewById<LinearLayout>(Resource.Id.WriteInput));

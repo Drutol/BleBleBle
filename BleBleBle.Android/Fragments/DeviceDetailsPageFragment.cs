@@ -75,7 +75,7 @@ namespace BleBleBle.Android.Fragments
 
         public override void NavigatedFrom()
         {
-            ViewModel.NavigatedFrom();
+
         }
 
         private void CharacteristicDataTemplate(DeviceCharacteristicViewModel item, CharacteristicViewHolder holder, int position)

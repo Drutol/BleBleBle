@@ -35,12 +35,6 @@
                     android:layout_gravity="center|start"
                     android:text="Enable notifications" />
 
-                <Button
-                    android:id="@+id/ReadOnceButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:text="Read once" />
             </FrameLayout>
 
         </LinearLayout>
@@ -49,29 +43,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="6dp"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/PullToReadLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Chat"
-            android:textColor="@color/AccentColour"
-            android:textSize="18sp" />
+            android:layout_gravity="center"
+            android:fontFamily="@string/font_family_light"
+            android:text="Pull to read..."
+            android:textSize="@dimen/FontSizeSmall" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/ChatRecyclerView"
+        <AoLibs.Utilities.Android.Views.ScrollableSwipeToRefreshLayout
+            android:id="@+id/RefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="4dp"
-            android:layout_weight="1"
-            android:clipToPadding="false"
-            android:fadingEdge="vertical"
-            android:paddingBottom="8dp" />
+            android:layout_weight="1">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/ChatRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:clipToPadding="false"
+                android:fadingEdge="vertical"
+                android:padding="8dp" />
+
+        </AoLibs.Utilities.Android.Views.ScrollableSwipeToRefreshLayout>
 
         <LinearLayout
             android:id="@+id/WriteInput"

@@ -25,7 +25,7 @@ namespace BleBleBle.Shared.ViewModels
         {
             if (await _permissionsManager.AskForPermissionGrants())
             {
-                _navigationManager.Navigate(PageIndex.DashboardPage);
+                _navigationManager.Navigate(PageIndex.ScannerPage);
             }
         });
     }
