@@ -84,7 +84,9 @@ namespace BleBleBle.Android.Fragments
         {
             holder.CharacteristicNameLabel.Text = item.Characteristic.Name;
             holder.CharacteristicUuidLabel.Text = item.Characteristic.Uuid;
-            holder.CharacteristicPermissionsLabel.Text = GetPermissionsString(item.Characteristic);
+            holder.IconCanRead.Visibility = item.Characteristic.CanRead ? ViewStates.Visible : ViewStates.Gone;
+            holder.IconCanWrite.Visibility = item.Characteristic.CanWrite  ? ViewStates.Visible : ViewStates.Gone;
+            holder.IconCanNotify.Visibility = item.Characteristic.CanUpdate ? ViewStates.Visible : ViewStates.Gone;
 
             holder.ClickSurface.SetOnClickCommand(ViewModel.NavigateCharacteristicDetailsCommand, item);
         }
@@ -93,27 +95,6 @@ namespace BleBleBle.Android.Fragments
         {
             holder.ServiceNameLabel.Text = item.Service.Name;
             holder.ServiceUuidLabel.Text = item.Service.Id.ToString();
-
-            holder.ClickSurface.SetOnClickListener(new OnClickListener(surf =>
-            {
-                // TODO hide characteristics
-            }));
-        }
-
-        private string GetPermissionsString(ICharacteristic itemCharacteristic)
-        {
-            var str = "";
-
-            if (itemCharacteristic.CanRead)
-                str += "r/";
-
-            if (itemCharacteristic.CanWrite)
-                str += "w/";
-
-            if (itemCharacteristic.CanUpdate)
-                str += "u";
-
-            return str;
         }
 
         #region Views
@@ -166,14 +147,19 @@ namespace BleBleBle.Android.Fragments
 
             private TextView _characteristicNameLabel;
             private TextView _characteristicUuidLabel;
-            private TextView _characteristicPermissionsLabel;
+            private ImageView _iconCanRead;
+            private ImageView _iconCanWrite;
+            private ImageView _iconCanNotify;
             private FrameLayout _clickSurface;
 
             public TextView CharacteristicNameLabel => _characteristicNameLabel ?? (_characteristicNameLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicNameLabel));
             public TextView CharacteristicUuidLabel => _characteristicUuidLabel ?? (_characteristicUuidLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicUuidLabel));
-            public TextView CharacteristicPermissionsLabel => _characteristicPermissionsLabel ?? (_characteristicPermissionsLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicPermissionsLabel));
+            public ImageView IconCanRead => _iconCanRead ?? (_iconCanRead = _view.FindViewById<ImageView>(Resource.Id.IconCanRead));
+            public ImageView IconCanWrite => _iconCanWrite ?? (_iconCanWrite = _view.FindViewById<ImageView>(Resource.Id.IconCanWrite));
+            public ImageView IconCanNotify => _iconCanNotify ?? (_iconCanNotify = _view.FindViewById<ImageView>(Resource.Id.IconCanNotify));
             public FrameLayout ClickSurface => _clickSurface ?? (_clickSurface = _view.FindViewById<FrameLayout>(Resource.Id.ClickSurface));
         }
+
 
     }
 }

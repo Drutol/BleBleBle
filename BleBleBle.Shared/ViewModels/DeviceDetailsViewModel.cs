@@ -14,6 +14,7 @@ using BleBleBle.Shared.Utils;
 using BleBleBle.Shared.ViewModels.Items;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Plugin.BLE.Abstractions;
 using Plugin.BLE.Abstractions.Contracts;
 
 namespace BleBleBle.Shared.ViewModels
@@ -61,17 +62,18 @@ namespace BleBleBle.Shared.ViewModels
 
             using (_messageBoxProvider.ObtainLoaderLifetime($"Connecting to {ScannedDevice.AdvertisedName}", null))
             {
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
                 try
                 {
-                    _bluetoothDevice = await _adapter.ConnectToKnownDeviceAsync(ScannedDevice.Guid, default, cts.Token);
+                    _bluetoothDevice = await _adapter.ConnectToKnownDeviceAsync(ScannedDevice.Guid,
+                        new ConnectParameters(true, true), cts.Token);
                 }
                 catch (OperationCanceledException)
                 {
                     await _messageBoxProvider.ShowMessageBoxOkAsync("Error", "Failed to connect to the device.", "Ok");
                     _navigationManager.GoBack();
                     return;
-                }               
+                }
             }
 
             using (var scope = ResourceLocator.ObtainScope())

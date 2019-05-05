@@ -40,6 +40,23 @@ namespace BleBleBle.Android.Fragments
                 this.SetBinding(() => ViewModel.AreNotificationsEnabled,
                     () => EnableNotificationsCheckbox.Checked, BindingMode.TwoWay));
 
+            Bindings.Add(
+                this.SetBinding(() => ViewModel.UseHex,
+                    () => RepresentationSwitch.Checked, BindingMode.TwoWay));
+
+            Bindings.Add(this.SetBinding(() => ViewModel.UseHex).WhenSourceChanges(() =>
+            {
+                if (ViewModel.UseHex)
+                {
+                    RepresentationLabel.Text = "Hex";
+                }
+                else
+                {
+                    RepresentationLabel.Text = "String";
+                }
+            }));
+
+
             Bindings.Add(this.SetBinding(() => ViewModel.Characteristic).WhenSourceChanges(() =>
             {
                 if (ViewModel.Characteristic == null)
@@ -83,7 +100,11 @@ namespace BleBleBle.Android.Fragments
                         }
                     },
                     ViewModel.ChatMessages) {StretchContentHorizonatally = true});
-            ChatRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity, LinearLayoutManager.Vertical, true));
+            ChatRecyclerView.SetLayoutManager(new LinearLayoutManager(Activity, LinearLayoutManager.Vertical, true)
+            {
+                StackFromEnd = true,
+                ReverseLayout = true
+            });
 
             SendButton.SetOnClickListener(new OnClickListener(view =>
             {
@@ -124,6 +145,8 @@ namespace BleBleBle.Android.Fragments
 
         #region Views
 
+        private Switch _representationSwitch;
+        private TextView _representationLabel;
         private CheckBox _enableNotificationsCheckbox;
         private TextView _pullToReadLabel;
         private RecyclerView _chatRecyclerView;
@@ -132,6 +155,8 @@ namespace BleBleBle.Android.Fragments
         private ImageButton _sendButton;
         private LinearLayout _writeInput;
 
+        public Switch RepresentationSwitch => _representationSwitch ?? (_representationSwitch = FindViewById<Switch>(Resource.Id.RepresentationSwitch));
+        public TextView RepresentationLabel => _representationLabel ?? (_representationLabel = FindViewById<TextView>(Resource.Id.RepresentationLabel));
         public CheckBox EnableNotificationsCheckbox => _enableNotificationsCheckbox ?? (_enableNotificationsCheckbox = FindViewById<CheckBox>(Resource.Id.EnableNotificationsCheckbox));
         public TextView PullToReadLabel => _pullToReadLabel ?? (_pullToReadLabel = FindViewById<TextView>(Resource.Id.PullToReadLabel));
         public RecyclerView ChatRecyclerView => _chatRecyclerView ?? (_chatRecyclerView = FindViewById<RecyclerView>(Resource.Id.ChatRecyclerView));

@@ -28,6 +28,7 @@ namespace BleBleBle.Shared.ViewModels
         private readonly IDispatcherAdapter _dispatcherAdapter;
         private ICharacteristic _characteristic;
         private bool _areNotificationsEnabled;
+        private bool _useHex;
 
         public ObservableCollection<IDeviceCharacteristicChatListItem> ChatMessages { get; set; } =
             new ObservableCollection<IDeviceCharacteristicChatListItem>();
@@ -38,6 +39,16 @@ namespace BleBleBle.Shared.ViewModels
             set
             {
                 _characteristic = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public bool UseHex
+        {
+            get => _useHex;
+            set
+            {
+                _useHex = value;
                 RaisePropertyChanged();
             }
         }
@@ -87,7 +98,9 @@ namespace BleBleBle.Shared.ViewModels
                     var messageModel = scope.TypedResolve<ReceivedCharacteristicMessageViewModel>(
                         new ReceivedCharacteristicMessage
                         {
-                            Content = e.Characteristic.StringValue,
+                            Content = UseHex
+                                ? Encoding.UTF8.GetString(e.Characteristic.Value)
+                                : BitConverter.ToString(e.Characteristic.Value).Replace("-", "").Insert(0, "0x"),
                             DateTime = DateTime.Now,
                         });
                     ChatMessages.Insert(0, messageModel);
@@ -146,15 +159,25 @@ namespace BleBleBle.Shared.ViewModels
                 if (AreNotificationsEnabled)
                     await _characteristic.StopUpdatesAsync();
 
-                var resp = await Characteristic.ReadAsync();
+                byte[] resp;
+                try
+                {
+                    resp = await Characteristic.ReadAsync();
+                }
+                catch (Exception e)
+                {
+                    return;
+                }
 
                 if (AreNotificationsEnabled)
                     await _characteristic.StartUpdatesAsync();
 
-                string message = null;
+                string message;
                 if (resp != null && resp.Any())
                 {
-                    message = Encoding.UTF8.GetString(resp);
+                    message = UseHex
+                        ? Encoding.UTF8.GetString(resp)
+                        : BitConverter.ToString(resp).Replace("-", "").Insert(0, "0x");
                 }
                 else
                 {

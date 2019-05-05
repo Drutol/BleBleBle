@@ -29,6 +29,8 @@ namespace BleBleBle.Shared.ViewModels
         private readonly IBluetoothDeviceDataExtractor _bluetoothDeviceDataExtractor;
         private CancellationTokenSource _taskCancelationSource;
 
+        public bool ShouldScan { get; set; }
+
         public ObservableCollection<ScannedDeviceViewModel> ScannedDeviceViewModels { get; } = new ObservableCollection<ScannedDeviceViewModel>();
 
         private Dictionary<Guid, DateTime> _spotTimes = new Dictionary<Guid, DateTime>();
@@ -45,7 +47,12 @@ namespace BleBleBle.Shared.ViewModels
 
             _adapter.DeviceDiscovered += AdapterOnDeviceDiscovered;
             _adapter.DeviceConnectionLost += AdapterOnDeviceConnectionLost;
+
+            _taskCancelationSource = new CancellationTokenSource();
+            Task.Factory.StartNew(RestartScanning, _taskCancelationSource.Token);
         }
+
+        
 
         private void AdapterOnDeviceConnectionLost(object sender, DeviceErrorEventArgs e)
         {
@@ -60,31 +67,34 @@ namespace BleBleBle.Shared.ViewModels
 
         public void NavigatedTo()
         {
+            ShouldScan = true;
             ScannedDeviceViewModels.Clear();
             _adapter.StartScanningForDevicesAsync();
-            _taskCancelationSource = new CancellationTokenSource();
-            Task.Factory.StartNew(RestartScanning, _taskCancelationSource.Token);
         }
 
         private async void RestartScanning()
         {
             while (true)
             {
-                await _adapter.StopScanningForDevicesAsync();
-
-                _dispatcherAdapter.Run(() =>
+                if (ShouldScan)
                 {
-                    foreach (var goneDevice in _spotTimes.Where(pair =>
-                        DateTime.UtcNow - pair.Value > TimeSpan.FromSeconds(20)))
-                    {
-                        var device =
-                            ScannedDeviceViewModels.FirstOrDefault(model => model.ScannedDevice.Device.Id == goneDevice.Key);
-                        if (device != null)
-                            ScannedDeviceViewModels.Remove(device);
-                    }
-                });
+                    await _adapter.StopScanningForDevicesAsync();
 
-                await _adapter.StartScanningForDevicesAsync();
+                    _dispatcherAdapter.Run(() =>
+                    {
+                        foreach (var goneDevice in _spotTimes.Where(pair =>
+                            DateTime.UtcNow - pair.Value > TimeSpan.FromSeconds(20)))
+                        {
+                            var device =
+                                ScannedDeviceViewModels.FirstOrDefault(model => model.ScannedDevice.Device.Id == goneDevice.Key);
+                            if (device != null)
+                                ScannedDeviceViewModels.Remove(device);
+                        }
+                    });
+
+                    if(ShouldScan)
+                        await _adapter.StartScanningForDevicesAsync();
+                }
 
 
                 Thread.Sleep(1000);
@@ -125,8 +135,10 @@ namespace BleBleBle.Shared.ViewModels
         }
 
         public RelayCommand<ScannedDeviceViewModel> NavigateDeviceDetailsCommand =>
-            new RelayCommand<ScannedDeviceViewModel>(device =>
+            new RelayCommand<ScannedDeviceViewModel>(async device =>
             {
+                ShouldScan = false;
+                await _adapter.StopScanningForDevicesAsync();
                 _navigationManager.Navigate(PageIndex.DeviceDetailsPage, new DeviceDetailsNavArgs
                 {
                     ScannedDevice = device.ScannedDevice
