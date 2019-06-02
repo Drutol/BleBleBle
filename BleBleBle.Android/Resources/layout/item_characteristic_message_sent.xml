@@ -59,7 +59,8 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:src="@drawable/icon_more"
-                android:tint="@color/AccentColour" />
+                android:tint="@color/AccentColour"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

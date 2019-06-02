@@ -61,26 +61,10 @@
 
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/IconCanRead"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:src="@drawable/icon_book_small" />
 
-                <ImageView
-                    android:id="@+id/IconCanWrite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:src="@drawable/icon_send_small" />
-
-                <ImageView
-                    android:id="@+id/IconCanNotify"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:src="@drawable/icon_bell_small" />
+              <TextView android:id="@+id/Permissions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
             </LinearLayout>
         </LinearLayout>

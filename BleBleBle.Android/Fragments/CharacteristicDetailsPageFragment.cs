@@ -44,19 +44,6 @@ namespace BleBleBle.Android.Fragments
                 this.SetBinding(() => ViewModel.UseHex,
                     () => RepresentationSwitch.Checked, BindingMode.TwoWay));
 
-            Bindings.Add(this.SetBinding(() => ViewModel.UseHex).WhenSourceChanges(() =>
-            {
-                if (ViewModel.UseHex)
-                {
-                    RepresentationLabel.Text = "Hex";
-                }
-                else
-                {
-                    RepresentationLabel.Text = "String";
-                }
-            }));
-
-
             Bindings.Add(this.SetBinding(() => ViewModel.Characteristic).WhenSourceChanges(() =>
             {
                 if (ViewModel.Characteristic == null)
@@ -124,6 +111,7 @@ namespace BleBleBle.Android.Fragments
         public override void NavigatedTo()
         {
             ViewModel.NavigatedTo(NavigationArguments as DeviceCharacteristicsDetailsNavArgs);
+            RefreshLayoutOnRefresh(this, EventArgs.Empty);
         }
 
         public override void NavigatedFrom()

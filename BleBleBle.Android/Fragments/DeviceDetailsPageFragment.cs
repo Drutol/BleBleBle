@@ -66,8 +66,6 @@ namespace BleBleBle.Android.Fragments
                         }
                     }, ViewModel.DeviceDetails) {StretchContentHorizonatally = true});
             RecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
-
-
         }
 
         public override void NavigatedTo()
@@ -80,13 +78,23 @@ namespace BleBleBle.Android.Fragments
 
         }
 
+        private string GetCharacteristicPermissionString(DeviceCharacteristicViewModel item)
+        {
+            var str = string.Empty;
+            if (item.Characteristic.CanRead)
+                str += "r/ ";
+            if (item.Characteristic.CanWrite)
+                str += "w/ ";
+            if (item.Characteristic.CanUpdate)
+                str += "u/ ";
+            return str;
+        }
+
         private void CharacteristicDataTemplate(DeviceCharacteristicViewModel item, CharacteristicViewHolder holder, int position)
         {
             holder.CharacteristicNameLabel.Text = item.Characteristic.Name;
             holder.CharacteristicUuidLabel.Text = item.Characteristic.Uuid;
-            holder.IconCanRead.Visibility = item.Characteristic.CanRead ? ViewStates.Visible : ViewStates.Gone;
-            holder.IconCanWrite.Visibility = item.Characteristic.CanWrite  ? ViewStates.Visible : ViewStates.Gone;
-            holder.IconCanNotify.Visibility = item.Characteristic.CanUpdate ? ViewStates.Visible : ViewStates.Gone;
+            holder.Permissions.Text = GetCharacteristicPermissionString(item);
 
             holder.ClickSurface.SetOnClickCommand(ViewModel.NavigateCharacteristicDetailsCommand, item);
         }
@@ -147,16 +155,12 @@ namespace BleBleBle.Android.Fragments
 
             private TextView _characteristicNameLabel;
             private TextView _characteristicUuidLabel;
-            private ImageView _iconCanRead;
-            private ImageView _iconCanWrite;
-            private ImageView _iconCanNotify;
+            private TextView _permissions;
             private FrameLayout _clickSurface;
 
             public TextView CharacteristicNameLabel => _characteristicNameLabel ?? (_characteristicNameLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicNameLabel));
             public TextView CharacteristicUuidLabel => _characteristicUuidLabel ?? (_characteristicUuidLabel = _view.FindViewById<TextView>(Resource.Id.CharacteristicUuidLabel));
-            public ImageView IconCanRead => _iconCanRead ?? (_iconCanRead = _view.FindViewById<ImageView>(Resource.Id.IconCanRead));
-            public ImageView IconCanWrite => _iconCanWrite ?? (_iconCanWrite = _view.FindViewById<ImageView>(Resource.Id.IconCanWrite));
-            public ImageView IconCanNotify => _iconCanNotify ?? (_iconCanNotify = _view.FindViewById<ImageView>(Resource.Id.IconCanNotify));
+            public TextView Permissions => _permissions ?? (_permissions = _view.FindViewById<TextView>(Resource.Id.Permissions));
             public FrameLayout ClickSurface => _clickSurface ?? (_clickSurface = _view.FindViewById<FrameLayout>(Resource.Id.ClickSurface));
         }
 
