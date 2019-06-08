@@ -21,6 +21,8 @@ namespace BleBleBle.Android.Activities
         Theme = "@style/AppTheme.Dark",
         ScreenOrientation = ScreenOrientation.Portrait,
         MainLauncher = true,
+        Icon = "@mipmap/ic_launcher",
+        RoundIcon = "@mipmap/ic_launcher_round",
         LaunchMode = LaunchMode.SingleInstance,
         ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class MainActivity : AppCompatActivity, IRequestPermissionsResultProvider
