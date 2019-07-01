@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -34,6 +35,7 @@ namespace BleBleBle.Shared.ViewModels
         public ObservableCollection<ScannedDeviceViewModel> ScannedDeviceViewModels { get; } = new ObservableCollection<ScannedDeviceViewModel>();
 
         private Dictionary<Guid, DateTime> _spotTimes = new Dictionary<Guid, DateTime>();
+        private bool _emptyNoticeVisibility;
 
         public ScannerPageViewModel(INavigationManager<PageIndex> navigationManager,
             IAdapter adapter,
@@ -50,9 +52,14 @@ namespace BleBleBle.Shared.ViewModels
 
             _taskCancelationSource = new CancellationTokenSource();
             Task.Factory.StartNew(RestartScanning, _taskCancelationSource.Token);
+            ScannedDeviceViewModels.CollectionChanged += ScannedDeviceViewModelsOnCollectionChanged;
         }
 
-        
+        private void ScannedDeviceViewModelsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            EmptyNoticeVisibility = !ScannedDeviceViewModels.Any();
+        }
+
 
         private void AdapterOnDeviceConnectionLost(object sender, DeviceErrorEventArgs e)
         {
@@ -145,5 +152,14 @@ namespace BleBleBle.Shared.ViewModels
                 });
             });
 
+        public bool EmptyNoticeVisibility
+        {
+            get => _emptyNoticeVisibility;
+            set
+            {
+                _emptyNoticeVisibility = value;
+                RaisePropertyChanged();
+            }
+        }
     }
 }

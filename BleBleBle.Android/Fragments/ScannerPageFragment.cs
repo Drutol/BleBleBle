@@ -37,6 +37,19 @@ namespace BleBleBle.Android.Fragments
                 new ObservableRecyclerAdapter<ScannedDeviceViewModel, ScannedDeviceViewHolder>(
                         ViewModel.ScannedDeviceViewModels, DataTemplate, ItemTemplate)
                     {StretchContentHorizonatally = true});
+
+            Bindings.Add(this.SetBinding(() => ViewModel.EmptyNoticeVisibility).WhenSourceChanges(() =>
+            {
+                if (ViewModel.EmptyNoticeVisibility)
+                {
+                    EmptyView.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    EmptyView.Visibility = ViewStates.Gone;
+                }
+            }));
+
             RecyclerView.SetLayoutManager(new LinearLayoutManager(Activity));
         }
 
@@ -66,8 +79,10 @@ namespace BleBleBle.Android.Fragments
         #region Views
 
         private RecyclerView _recyclerView;
+        private LinearLayout _emptyView;
 
         public RecyclerView RecyclerView => _recyclerView ?? (_recyclerView = FindViewById<RecyclerView>(Resource.Id.RecyclerView));
+        public LinearLayout EmptyView => _emptyView ?? (_emptyView = FindViewById<LinearLayout>(Resource.Id.EmptyView));
 
         #endregion
 

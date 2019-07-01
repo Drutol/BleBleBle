@@ -27,13 +27,40 @@
     </FrameLayout>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp" />
+
+        <LinearLayout
+            android:id="@+id/EmptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha=".3"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_search" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Searching..."
+                android:textColor="#fff"
+                android:textSize="32sp" />
+        </LinearLayout>
+    </FrameLayout>
+
 
 </LinearLayout>
